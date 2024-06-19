@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Online Dictionary | Result</title>
+</head>
+<body>
+    <header>
+        Online Dictionary
+    </header>
+    <div class="container">
+        <div class="search-box">
+            <form action="{% url 'result' %}" method="get">
+                <input type="text" name="search" placeholder="Type a word...">
+                <button class="btn">Search</button>
+            </form>
+        </div>
+        <div class="result" id="result">
+            <h2>Word: <span id="word-result">{{word}}</span></h2>
+
+            {% if meanings %}
+                <p><strong>Phonetic:</strong> <span id="phonetic">{{pronounciation}}</span></p>
+                <div><audio src="{{audio}}" controls></audio></div>
+
+                {% for meaning in meanings %}
+                <div class="definitions">
+                    <p><strong>Part of speech:</strong> {{meaning.partOfSpeech}}</p>
+
+                    {% for this in meaning.definitions %}
+                    <p><strong>Definition:</strong> <span id="definition">{{this.definition}}</span></p>
+                    <p><strong>Synonyms:</strong></p>
+                    <ul id="synonyms">
+                        <li>{{this.synonyms}}</li>
+                    </ul>
+                    <p><strong>Antonyms:</strong></p>
+                    <ul id="antonyms">
+                        <li>{{this.antonyms}}</li>
+                    </ul>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div>
+                    No Definitions Found
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
